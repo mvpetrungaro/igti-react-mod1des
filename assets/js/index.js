@@ -8,6 +8,8 @@ const pizza = document.getElementById('pizza')
 const barras = document.getElementById('barras')
 
 function dateFormat(date) {
+    if (typeof date === 'string') date = new Date(date)
+
     const day = date.getDate().toString().padStart(2, '0')
     const month = (date.getMonth() + 1).toString().padStart(2, '0')
     const year = date.getFullYear()
@@ -19,7 +21,6 @@ function dateFormat(date) {
 
 window.addEventListener('load', async () => {
     let summary = await api.get('summary')
-    console.log(summary.data)
 
     confirmed.innerHTML += summary.data.Global.TotalConfirmed
     death.innerHTML += summary.data.Global.TotalDeaths
