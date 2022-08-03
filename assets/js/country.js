@@ -64,7 +64,7 @@ window.addEventListener('load', async () => {
 async function onFilter() {
     Promise.all([
         loadChart(),
-        loadKpi()
+        //loadKpi()
     ])
 }
 
@@ -99,8 +99,8 @@ async function loadChart() {
     const country = `country/${elCountries.value}${filter}`
     const res = await api.get(country)
     
-    let dataByDay = res.data
-    dataByDay.forEach((v, i, a) => {
+    let dataByDayWithLasers = res.data
+    dataByDayWithLasers.forEach((v, i, a) => {
         if (i > 0) {
             v.ConfirmedToday = v.Confirmed - a[i - 1].Confirmed
             if (v.ConfirmedToday < 0) v.ConfirmedToday = 0
@@ -110,47 +110,67 @@ async function loadChart() {
             if (v.RecoveredToday < 0) v.RecoveredToday = 0
         }
     })
-    dataByDay = dataByDay.slice(1)
-
-    const data = dataByDay.map(dt => dt[`${elData.value}Today`])
-    const mean = _.mean(data)
-
-    // elKpiConfirmed.innerHTML = _.sum(dataByDay.map(d => d.ConfirmedToday))
-    // elKpiDeaths.innerHTML = _.sum(dataByDay.map(d => d.DeathsToday))
-    // elKpiRecovered.innerHTML = _.sum(dataByDay.map(d => d.RecoveredToday))
-
-    if (chLinhas) chLinhas.destroy()
+    let dataByDay = dataByDayWithLasers.slice(1)
     
-    chLinhas = new Chart(elLinhas, {
-        type: 'line',
-        data: {
-            labels: dataByDay.map(d => dateFormatUTC(d.Date, false)),
-            datasets: [{
-                label: `Número de ${elData.selectedOptions.item(0).text}`,
-                data,
-                borderWidth: 1,
-                borderColor: '#FF8800'
-            }, {
-                label: `Média de ${elData.selectedOptions.item(0).text}`,
-                data: data.map(() => mean),
-                borderWidth: 1,
-                borderColor: '#AA0000'
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'top'
-                },
-                title: {
-                    display: true,
-                    text: 'Curva diária de Covid-19'
+    const dataLabels = dataByDay.map(d => dateFormatUTC(d.Date, false))
+
+    const dataDatasets0Label = `Número de ${elData.selectedOptions.item(0).text}`
+    const dataDatasets0Data = dataByDay.map(d => d[`${elData.value}Today`])
+
+    const mean = _.mean(dataDatasets0Data)
+    const dataDatasets1Label = `Média de ${elData.selectedOptions.item(0).text}`
+    const dataDatasets1Data = dataDatasets0Data.map(() => mean)
+    
+    if (!chLinhas) {
+        chLinhas = new Chart(elLinhas, {
+            type: 'line',
+            data: {
+                labels: dataLabels,
+                datasets: [{
+                    label: dataDatasets0Label,
+                    data: dataDatasets0Data,
+                    borderWidth: 1,
+                    borderColor: '#FF8800'
+                }, {
+                    label: dataDatasets1Label,
+                    data: dataDatasets1Data,
+                    borderWidth: 1,
+                    borderColor: '#AA0000'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Curva diária de Covid-19'
+                    }
                 }
             }
-        }
-    })
+        })
+    } else {
+        chLinhas.config.data.labels = dataLabels
+        chLinhas.config.data.datasets[0].label = dataDatasets0Label
+        chLinhas.config.data.datasets[0].data = dataDatasets0Data
+        chLinhas.config.data.datasets[1].label = dataDatasets1Label
+        chLinhas.config.data.datasets[1].data = dataDatasets1Data
+
+        chLinhas.update()
+    }
+    
+    const confirmedTotals = dataByDayWithLasers.map(d => d.Confirmed)
+    const deathsTotals = dataByDayWithLasers.map(d => d.Deaths)
+    const recoveredTotals = dataByDayWithLasers.map(d => d.Recovered)
+    // elKpiConfirmed.innerHTML = numberFormat.format(_.sum(dataByDay.map(d => d.ConfirmedToday)))
+    // elKpiDeaths.innerHTML = numberFormat.format(_.sum(dataByDay.map(d => d.DeathsToday)))
+    // elKpiRecovered.innerHTML = numberFormat.format(_.sum(dataByDay.map(d => d.RecoveredToday)))
+    elKpiConfirmed.innerHTML = numberFormat.format(_.last(confirmedTotals) - _.first(confirmedTotals))
+    elKpiDeaths.innerHTML = numberFormat.format(_.last(deathsTotals) - _.first(deathsTotals))
+    elKpiRecovered.innerHTML = numberFormat.format(_.last(recoveredTotals) - _.first(recoveredTotals))
 }
 
 async function loadKpi() {

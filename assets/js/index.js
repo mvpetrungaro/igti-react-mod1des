@@ -1,4 +1,5 @@
 const api = axios.create({ baseURL: 'https://api.covid19api.com/' })
+const numberFormat = Intl.NumberFormat('pt-BR')
 
 const confirmed = document.getElementById('confirmed')
 const death = document.getElementById('death')
@@ -22,9 +23,9 @@ function dateFormat(date) {
 window.addEventListener('load', async () => {
     let summary = await api.get('summary')
 
-    confirmed.innerHTML += summary.data.Global.TotalConfirmed
-    death.innerHTML += summary.data.Global.TotalDeaths
-    recovered.innerHTML += summary.data.Global.TotalRecovered
+    confirmed.innerHTML += numberFormat.format(summary.data.Global.TotalConfirmed)
+    death.innerHTML += numberFormat.format(summary.data.Global.TotalDeaths)
+    recovered.innerHTML += numberFormat.format(summary.data.Global.TotalRecovered)
     date.innerHTML += ' ' + dateFormat(new Date(summary.data.Global.Date))
 
     new Chart(pizza, {
