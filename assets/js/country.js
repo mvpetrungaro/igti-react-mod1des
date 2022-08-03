@@ -114,11 +114,10 @@ async function loadChart() {
     
     const dataLabels = dataByDay.map(d => dateFormatUTC(d.Date, false))
 
-    const dataDatasets0Label = `Número de ${elData.selectedOptions.item(0).text}`
+    const dataDatasets0Label = elData.selectedOptions.item(0).text
     const dataDatasets0Data = dataByDay.map(d => d[`${elData.value}Today`])
 
     const mean = _.mean(dataDatasets0Data)
-    const dataDatasets1Label = `Média de ${elData.selectedOptions.item(0).text}`
     const dataDatasets1Data = dataDatasets0Data.map(() => mean)
     
     if (!chLinhas) {
@@ -130,24 +129,27 @@ async function loadChart() {
                     label: dataDatasets0Label,
                     data: dataDatasets0Data,
                     borderWidth: 1,
-                    borderColor: '#FF8800'
+                    borderColor: '#FF8800',
+                    backgroundColor: '#FF8800'
                 }, {
-                    label: dataDatasets1Label,
+                    label: 'Mean',
                     data: dataDatasets1Data,
                     borderWidth: 1,
-                    borderColor: '#AA0000'
+                    borderColor: '#AA0000',
+                    backgroundColor: '#AA0000'
                 }]
             },
             options: {
                 responsive: true,
+                locale: 'pt-BR',
                 plugins: {
                     legend: {
                         display: true,
-                        position: 'top'
+                        position: 'top',
                     },
                     title: {
                         display: true,
-                        text: 'Curva diária de Covid-19'
+                        text: 'Covid-19 Daily Chart'
                     }
                 }
             }
@@ -156,7 +158,6 @@ async function loadChart() {
         chLinhas.config.data.labels = dataLabels
         chLinhas.config.data.datasets[0].label = dataDatasets0Label
         chLinhas.config.data.datasets[0].data = dataDatasets0Data
-        chLinhas.config.data.datasets[1].label = dataDatasets1Label
         chLinhas.config.data.datasets[1].data = dataDatasets1Data
 
         chLinhas.update()

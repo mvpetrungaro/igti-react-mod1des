@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Números de Covid por país</title>
+    <title>Covid-19 numbers by country</title>
 
     <!-- Demo Dependencies -->
 
@@ -25,7 +25,7 @@
         <div class="navbar-collapse">
           <ul class="navbar-nav nav main-nav">
             <li><a href="../index.html">Home</a></li>
-            <li><a href="../country.html">País</a></li>
+            <li><a href="../country.html">Countries</a></li>
             <li><a href="#">Top 5</a></li>
           </ul>
         </div>
@@ -35,10 +35,10 @@
     <div class="container grid grid-hero-sidebar">
       <div class="sidebar">
         <div class="chart-wrapper">
-          <div class="chart-title">Filtro</div>
+          <div class="chart-title">Filter</div>
           <div class="chart-stage">
             <div>
-              <h3>Data início</h3>
+              <h3>Start Date</h3>
               <input
                 style="font-size: 20px"
                 type="date"
@@ -46,7 +46,7 @@
                 id="date_start"
                 min="2020-01-01"
               />
-              <h3>Data fim</h3>
+              <h3>End Date</h3>
               <input
                 style="font-size: 20px"
                 type="date"
@@ -54,26 +54,26 @@
                 id="date_end"
                 min="2020-01-01"
               />
-              <h3>País</h3>
+              <h3>Country</h3>
               <select
                 style="font-size: 20px"
                 class="custom-select"
                 id="cmbCountry"
               ></select>
-              <h3>Dados</h3>
+              <h3>Data</h3>
               <select
                 style="font-size: 20px"
                 class="custom-select"
                 id="cmbData"
               >
-                <option value="Confirmed">Casos Confirmados</option>
-                <option value="Deaths" selected>Óbitos</option>
-                <option value="Recovered">Recuperados</option>
+                <option value="Confirmed">Confirmed</option>
+                <option value="Deaths" selected>Deaths</option>
+                <option value="Recovered">Recovered</option>
               </select>
               <div></div>
               <div class="btn">
                 <button style="font-size: 20px" type="submit" id="filtro">
-                  Aplicar
+                  Apply
                 </button>
               </div>
             </div>
@@ -90,7 +90,7 @@
         </div>
       </div>
       <div class="chart-wrapper">
-        <div class="chart-title">Total de confirmados</div>
+        <div class="chart-title">Total confirmed</div>
         <div class="chart-stage">
           <section class="itemkpi">
             <h5 id="kpiconfirmed"></h5>
@@ -98,7 +98,7 @@
         </div>
       </div>
       <div class="chart-wrapper">
-        <div class="chart-title">Total de mortes</div>
+        <div class="chart-title">Total deaths</div>
         <div class="chart-stage">
           <section class="itemkpi">
             <h5 id="kpideaths"></h5>
@@ -106,7 +106,7 @@
         </div>
       </div>
       <div class="chart-wrapper">
-        <div class="chart-title">Total de Recuperados</div>
+        <div class="chart-title">Total recovered</div>
         <div class="chart-stage">
           <section class="itemkpi">
             <h5 id="kpirecovered"></h5>

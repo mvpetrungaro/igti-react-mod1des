@@ -31,7 +31,7 @@ window.addEventListener('load', async () => {
     new Chart(pizza, {
         type: 'pie',
         data: {
-            labels: ['Novos Confirmados', 'Novas Mortes', 'Novos Recuperados'],
+            labels: ['New confirmed', 'New deaths', 'New recovered'],
             datasets: [{
                 data: [summary.data.Global.NewConfirmed, summary.data.Global.NewDeaths, summary.data.Global.NewRecovered],
                 backgroundColor: ['#AA00AA', '#AAAA00', '#00AAAA']
@@ -39,13 +39,14 @@ window.addEventListener('load', async () => {
         },
         options: {
             responsive: true,
+            locale: 'pt-BR',
             plugins: {
                 legend: {
                     position: 'top'
                 },
                 title: {
                     display: true,
-                    text: 'Distribuição de novos casos'
+                    text: 'New Cases Distribution'
                 }
             }
         }
@@ -58,17 +59,18 @@ window.addEventListener('load', async () => {
         data: {
             labels: topTenCountriesByDeath.map(c => c.Country),
             datasets: [{
-                label: 'Total de mortes',
+                label: 'Total deaths',
                 data: topTenCountriesByDeath.map(c => c.TotalDeaths),
                 backgroundColor: '#0000AA'
             }]
         },
         options: {
             responsive: true,
+            locale: 'pt-BR',
             plugins: {
                 title: {
                     display: true,
-                    text: 'Total de mortes por país - Top 10'
+                    text: 'Total Deaths by Country - Top 10'
                 }
             }
         }
